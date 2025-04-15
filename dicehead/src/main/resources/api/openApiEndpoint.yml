@@ -1,0 +1,87 @@
+openapi: 3.0.3
+info:
+  title: DiceHead service
+  description: DiceHead service
+  version: 1.0.0
+servers:
+  - url: 'http://dicehead:5009'
+paths:
+
+  /users/{userId}:
+    get:
+      summary: Получение пользователя по его uuid
+      operationId: getUser
+      tags:
+        - User
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID пользователя
+      responses:
+        '200':
+          description: Успешное получение
+          content:
+            application/json:
+              schema:
+                $ref: './openApiModel.yml#/components/schemas/UserResponse'
+        '404':
+          description: Пользователь не найден
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /user/update:
+    put:
+      summary: Обновление данных пользователя
+      tags:
+        - User
+      operationId: updateUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './openApiModel.yml#/components/schemas/UpdateUserRequest'
+      responses:
+        '200':
+          description: Удачное обновление данных пользователя
+          content:
+            application/json:
+              schema:
+                $ref: './openApiModel.yml#/components/schemas/UserResponse'
+        '400':
+          description: Неверно указанные параметры
+        '404':
+          description: Пользователь не найден
+        '500':
+          description: Внутренняя ошибка сервера
+
+  /games/{gameId}:
+    get:
+      summary: Получение игры по ее uuid
+      operationId: getGame
+      tags:
+        - Game
+      parameters:
+        - name: gameId
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+          description: UUID игры
+      responses:
+        '200':
+          description: Успешное получение
+          content:
+            application/json:
+              schema:
+                $ref: './openApiModel.yml#/components/schemas/GameResponse'
+        '404':
+          description: Игра не найдена
+        '500':
+          description: Внутренняя ошибка сервера
+

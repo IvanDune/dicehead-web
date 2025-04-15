@@ -1,0 +1,70 @@
+openapi: 3.0.3
+info:
+  title: DiceHead components
+  description: "Общие компоненты для dto"
+  version: 0.0.1
+
+paths: { }
+
+components:
+  schemas:
+    UpdateUserRequest:
+      type: object
+      description: "Запрос на обновление персональных данных пользователя"
+      properties:
+        userId:
+          type: string
+          format: uuid
+          description: "Идентификатор пользователя"
+        mobile:
+          type: string
+          description: "Телефонный номер"
+        nickname:
+          type: string
+          description: "Никнейм"
+      required:
+        - userId
+
+    UserResponse:
+      type: object
+      description: "Данные пользователя"
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: "Идентификатор пользователя"
+        mail:
+          type: string
+          description: "Почта"
+        mobile:
+           type: string
+           description: "Телефонный номер"
+        nickname:
+           type: string
+           description: "Никнейм"
+
+    GameResponse:
+      type: object
+      description: "Информация об игре"
+      properties:
+        gameId:
+          type: string
+          format: uuid
+          description: "Идентификатор игры"
+        title:
+          type: string
+          description: "Название"
+        description:
+          type: string
+          description: "Описание"
+        systemName:
+          type: string
+          description: "Система"
+        playersNumber:
+          type: integer
+          description: "Количество игроков"
+        clubId:
+          type: string
+          format: uuid
+
+

@@ -1,0 +1,16 @@
+{
+  "library": "spring-boot",
+  "dateLibrary": "java8",
+  "hideGenerationTimestamp": true,
+  "modelPackage": "ru.dicehead.api.model",
+  "apiPackage": "ru.dicehead.api",
+  "invokerPackage": "ru.dicehead.api",
+  "serializableModel": true,
+  "openApiNullable": false,
+  "useTags": true,
+  "useGzipFeature": true,
+  "unhandledException": true,
+  "useSpringBoot3": true,
+  "useSwaggerUI": true,
+  "interfaceOnly": true
+}

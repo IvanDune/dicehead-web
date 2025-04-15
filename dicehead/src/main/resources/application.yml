@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: dicehead
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  enable-kotlin: false

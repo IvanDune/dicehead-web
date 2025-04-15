@@ -1,0 +1,84 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.4.4'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id "io.freefair.lombok" version "8.4"
+	id 'org.hidetake.swagger.generator' version '2.19.2'
+}
+
+group = 'com.project.website'
+version = '0.0.1-SNAPSHOT'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+processResources {
+	dependsOn(generateSwaggerCode)
+}
+
+repositories {
+	mavenCentral()
+}
+
+swaggerSources {
+	schema {
+		inputFile = file("${rootDir}/src/main/resources/api/openApiModel.yml")
+		inputFile = file("${rootDir}/src/main/resources/api/openApiEndpoint.yml")
+		code {
+			language = 'spring'
+			configFile = file("${rootDir}/src/main/resources/api/config.json")
+			dependsOn validation
+		}
+	}
+}
+
+compileJava.dependsOn swaggerSources.schema.code
+sourceSets.main.java.srcDir "${swaggerSources.schema.code.outputDir}/src/main/java"
+sourceSets.main.resources.srcDir "${swaggerSources.schema.code.outputDir}/src/main/resources"
+
+ext {
+	set('springCloudVersion', "2024.0.1")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.cloud:spring-cloud-stream'
+	implementation 'org.springframework.cloud:spring-cloud-stream-binder-kafka'
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.1.0'
+	implementation 'org.mapstruct:mapstruct:1.6.0'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'org.postgresql:postgresql'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.cloud:spring-cloud-stream-test-binder'
+	testImplementation 'org.springframework.kafka:spring-kafka-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: '2.0.3'
+	swaggerCodegen 'org.openapitools:openapi-generator-cli:7.3.0'
+	implementation 'io.swagger.core.v3:swagger-annotations:2.2.20'
+	implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
